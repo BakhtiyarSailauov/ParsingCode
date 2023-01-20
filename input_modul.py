@@ -1,8 +1,7 @@
 import xlsxwriter
-from actions_modul import get_data_array
 
 def writer(parametrs):
-    book = xlsxwriter.Workbook(r"C:\Users\Pavilion\Desktop\Python\parser\data.xlsx")
+    book = xlsxwriter.Workbook(r"data.xlsx")
     page = book.add_worksheet("dates")
 
     row = 0
@@ -21,5 +20,3 @@ def writer(parametrs):
         row += 1
 
     book.close()
-
-writer(get_data_array)

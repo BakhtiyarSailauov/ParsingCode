@@ -7,28 +7,26 @@ headers = {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 }
 
-def download(url):
-    resp = requests.get(url, stream = True)
-    r = open("C:\\Users\\Pavilion\\Desktop\\Python\\parser\\image\\" + url.split("/")[-1], "wb")
-    for value in resp.iter_content(1024*1024): 
-        r.write(value)
-    r.close()
-
 def get_url():
-    for page in range(1, 8):
-        url = f'https://scrapingclub.com/exercise/list_basic/?page={page}'
-        requests_data = requests.get(url, headers = headers)
+    for page in range(1, 10000):
+        try:
+            url = f'https://scrapingclub.com/exercise/list_basic/?page={page}'
+            requests_data = requests.get(url, headers = headers)
 
-        soup = BeautifulSoup(requests_data.text, 'lxml')
+            soup = BeautifulSoup(requests_data.text, 'lxml')
 
-        array_data = soup.find_all("div", class_ = "col-lg-4 col-md-6 mb-4")
+            array_data = soup.find_all("div", class_ = "col-lg-4 col-md-6 mb-4")
 
-        for data in array_data:
-            link_page = "https://scrapingclub.com" + data.find('a').get('href')
-            yield link_page
+            for data in array_data:
+                link_page = "https://scrapingclub.com" + data.find('a').get('href')
+                yield link_page
+        except:
+            yield False
 
 def get_data_array():
-    for page_url in get_url(): 
+    for page_url in get_url():
+        if not get_url:
+            break
         #ПС: писать код таким образом - ХАРАМ.
         requests_data = requests.get(page_url, headers = headers)
 
@@ -44,3 +42,10 @@ def get_data_array():
     
         download(link_img)
         yield name_ctl, price_ctl, text_ctl, link_img
+
+def download(url):
+    resp = requests.get(url, stream = True)
+    r = open("images_result\\" + url.split("/")[-1], "wb")
+    for value in resp.iter_content(1024*1024): 
+        r.write(value)
+    r.close()
