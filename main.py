@@ -7,6 +7,7 @@ def play():
         os.mkdir("images_result")
     except:
         pass
-    writer(get_data_array)
+    items = list(get_data_array())
+    writer(items)
 
 play()

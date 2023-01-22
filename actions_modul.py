@@ -23,6 +23,8 @@ def get_url():
         except:
             yield False
 
+"""
+"""
 def get_data_array():
     for page_url in get_url():
         if not get_url:
