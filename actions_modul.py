@@ -19,7 +19,21 @@ get_page - предназна для того что-бы вернуть все 
 Сама функция реализована как генератор, и каждый раз будет вернуть один блок из всего листа.
 """
 def get_page(start_page, finishing_page, link):
+    """
+    Функция-генератор возвращает ссылку на конкретную страницу с каталогом для парсинга, 
+    сортируя его с помощью BeautylSoup и requests
+
+    Аргументы: 
+              start_page(int) - принимаем от пользовотеля начальную страницу в виде целого числа
+              для парсинга 
+              finishing_page(int) - принимаем от пользовотеля кончечную страницу в виде целого числа
+              для парсинга
+              link(string) - ссылка на сайт
+    Возвращает:
+               link_pahe(string) -  ссылка каталого из сайта
+    """
     for page in range(int(start_page), int(finishing_page)):
+        print((100*'\n') + "Подождите! Идет процесс парсинга. Мы на {} странице. ".format(page))
         url_array = link.split("/")
         url_array.append(f'?page={page}')
         url = "/".join(url_array)
@@ -35,6 +49,22 @@ def get_page(start_page, finishing_page, link):
 
 
 def get_items(start_page, finishing_page, link, timer, file_path, download_path):
+    """
+    Функция-генератор возвращает конкретную список аргументов для парсинга, 
+    сортируя его с помощью BeautylSoup и requests
+
+    Аргументы: 
+              start_page(int) - принимаем от пользовотеля начальную страницу в виде целого числа
+              для парсинга 
+              finishing_page(int) - принимаем от пользовотеля кончечную страницу в виде целого числа
+              для парсинга
+              link(string) - ссылка на сайт
+              timer(int) - принимем аргумент на указание сколько секунд надо задержовать в time.sleep(arg)
+              file_path(string) - принимаем место для сохранение Exsеl файла
+              download(string) - принимаем место для сохранение скачанных файлов
+    Возвращает:
+               аргумент данных из парсинга(name_ctl, price_ctl, text_ctl, link_img)
+    """
     for page_url in get_page(start_page, finishing_page, link):
         #ПС: писать код таким образом - ХАРАМ.
         requests_data = requests.get(page_url, headers = headers)
@@ -53,6 +83,15 @@ def get_items(start_page, finishing_page, link, timer, file_path, download_path)
         yield name_ctl, price_ctl, text_ctl, link_img
 
 def download(url, download_path):
+    """
+    Функция cкачивает изображение(в целом любого типа файла), с помощью requests.get(stream=True) 
+
+    Аргументы: 
+              url(string) - ссылка сайта
+              download(string) - принимаем место для сохранение скачанных файлов
+    Возвращает:
+               null
+    """
     resp = requests.get(url, stream = True)
     r = open("{}\\".format(download_path) + url.split("/")[-1], "wb")
     for value in resp.iter_content(1024*1024): 
