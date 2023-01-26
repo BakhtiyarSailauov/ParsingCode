@@ -1,7 +1,7 @@
 import xlsxwriter
 
-def writer(parametrs):
-    book = xlsxwriter.Workbook(r"data.xlsx")
+def data_entry(file_path, *parametrs):
+    book = xlsxwriter.Workbook(r"{}".format(file_path))
     page = book.add_worksheet("dates")
 
     row = 0
